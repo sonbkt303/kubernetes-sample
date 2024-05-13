@@ -17,29 +17,20 @@ spec:
       containers:
       - name: mongodb
         image: mongo
-        resources:
-          limits:
-            memory: "256Mi"
-            cpu: "500m"
-          requests:
-            memory: 128Mi
-            cpu: "0.2"
         ports:
         - containerPort: 27017
         env:
         - name: MONGO_INITDB_ROOT_USERNAME
-          valueFrom: 
+          valueFrom:
             secretKeyRef:
-              name: mongodb-secret 
+              name: mongodb-secret
               key: mongo-root-username
         - name: MONGO_INITDB_ROOT_PASSWORD
           valueFrom: 
             secretKeyRef:
               name: mongodb-secret
               key: mongo-root-password
-
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -48,8 +39,6 @@ spec:
   selector:
     app: mongodb
   ports:
-  - port: 27017
-    targetPort: 27017
-
-
-
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
